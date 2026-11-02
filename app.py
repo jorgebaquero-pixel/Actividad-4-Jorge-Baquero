@@ -1,4 +1,3 @@
-Python
 import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
