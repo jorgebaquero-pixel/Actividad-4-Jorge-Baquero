@@ -16,26 +16,32 @@ Esta aplicación web dinámica transforma los datos en un tablero de control (*d
 Desarrollar y desplegar una aplicación web dinámica e interactiva en Python mediante **Dash** y **Plotly**, publicada en la plataforma PaaS **Render**, que facilite la visualización exploratoria y la interpretación fundamentada de los patrones demográficos, geográficos y causales en Colombia para el año 2019.
 
 ---
-
-## 3. Estructura del Proyecto
+## 3. Estructura
 
 El repositorio está organizado bajo un esquema modular que separa el procesamiento de datos, el código fuente de la interfaz gráfica y los archivos de configuración para el despliegue en la nube:
 
+```
 mortalidad-colombia-2019/
 ├── data/                               # Archivos CSV livianos preprocesados
-│   ├── muertes_departamento.csv        # Agregación para mapa por dep (G1)
+│   ├── muertes_departamento.csv        # Agregación para mapa por departamento (G1)
 │   ├── muertes_mes.csv                 # Tendencia mensual de registros (G2)
 │   ├── top5_municipios.csv             # Registros por municipio X95 (G3)
 │   ├── top10_menor_mortalidad.csv      # Municipios con menor índice (G4)
 │   ├── top10_causas.csv                # Ranking CIE-10 de causas (G5)
-│   ├── muertes_sexo_depto.csv          # Comparación por género y dep (G6)
-│   └── muertes_edad.csv                # Categorización por edad DANE (G7)
+│   ├── muertes_sexo_depto.csv          # Comparación por género y departamento (G6)
+│   └── muertes_edad.csv                # Categorización por grupos de edad DANE (G7)
 ├── src/                                # Código fuente de la aplicación
-│   └── app.py                          # Cod principal de Dash y maquetado
+│   └── app.py                          # Script principal de Dash y maquetado
 ├── preprocesar_datos.py                # Script local para limpieza de datos
 ├── requirements.txt                    # Dependencias de Python
 ├── render.yaml                         # Configuración para Render PaaS
-└── redme.md                           # Documentación Actividad 4.
+└── README.md                           # Documentación técnica e informe del proyecto
+
+```
+
+---
+
+
 ---
 
 ## 4. Requisitos
