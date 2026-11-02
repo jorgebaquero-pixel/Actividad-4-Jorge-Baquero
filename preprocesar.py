@@ -95,60 +95,89 @@ top10_menor.to_csv("data/top10_menor_mortalidad.csv", index=False)
 # 5. TABLA INTERACTIVA: Top 10 Causas de Muerte (CIE-10)
 print("Procesando gráfico 5: Top 10 causas de muerte...")
 
-# A. Limpieza de espacios en blanco
-df_causas.columns = df_causas.columns.astype(str).str.strip()
-df_nofetal["COD_MUERTE"] = df_nofetal["COD_MUERTE"].astype(str).str.strip()
+# A. Limpiar códigos en NoFetal2019 (quitar puntos, espacios y pasar a mayúsculas)
+df_nofetal["COD_MUERTE_CLEAN"] = (
+    df_nofetal["COD_MUERTE"]
+    .astype(str)
+    .str.replace(".", "", regex=False)
+    .str.strip()
+    .str.upper()
+)
 
-# Identificar columnas con tolerancia a variaciones de nombre
+# B. Buscar automáticamente la columna de código y descripción en CodigosDeMuerte
 cols_causas = list(df_causas.columns)
-col_codigo_cie = next(
+
+col_codigo = next(
     (c for c in cols_causas if any(k in c.lower() for k in ["cód", "cod", "cie"])),
-    cols_causas[0]
-)
-col_desc_cie = next(
-    (c for c in cols_causas if any(k in c.lower() for k in ["desc", "nom", "causa"]) and c != col_codigo_cie),
-    cols_causas[1] if len(cols_causas) > 1 else cols_causas[0]
+    cols_causas[0],
 )
 
-df_causas[col_codigo_cie] = df_causas[col_codigo_cie].astype(str).str.strip()
+col_desc = next(
+    (c for c in cols_causas if any(k in c.lower() for k in ["desc", "nom", "causa"]) and c != col_codigo),
+    cols_causas[1] if len(cols_causas) > 1 else cols_causas[0],
+)
 
-# B. Agrupar y contar total de defunciones por causa
+df_causas["COD_CIE_CLEAN"] = (
+    df_causas[col_codigo]
+    .astype(str)
+    .str.replace(".", "", regex=False)
+    .str.strip()
+    .str.upper()
+)
+
+# C. Agrupar por causa y contar casos
 top_causas = (
-    df_nofetal.groupby("COD_MUERTE")
+    df_nofetal.groupby("COD_MUERTE_CLEAN")
     .size()
-    .reset_index(name="TOTAL_CASOS")
+    .reset_index(name="Total de Defunciones")
 )
 
-# C. Cruzar con el catálogo CIE-10 (eliminando duplicados para no inflar conteos)
-catalogo_cie = df_causas[[col_codigo_cie, col_desc_cie]].drop_duplicates(subset=[col_codigo_cie])
+# D. Cruzar con el catálogo de causas de muerte
+catalogo_causas = df_causas[["COD_CIE_CLEAN", col_desc]].drop_duplicates(
+    subset=["COD_CIE_CLEAN"]
+)
 
 top_causas = pd.merge(
     top_causas,
-    catalogo_cie,
-    left_on="COD_MUERTE",
-    right_on=col_codigo_cie,
-    how="left"
+    catalogo_causas,
+    left_on="COD_MUERTE_CLEAN",
+    right_on="COD_CIE_CLEAN",
+    how="left",
 )
 
-# D. Renombrar y seleccionar columnas
+# E. Dar formato final a las columnas
 top_causas = top_causas.rename(
     columns={
-        "COD_MUERTE": "Código CIE-10",
-        col_desc_cie: "Nombre de la Causa de Muerte",
-        "TOTAL_CASOS": "Total de Defunciones",
+        "COD_MUERTE_CLEAN": "Código CIE-10",
+        col_desc: "Nombre de la Causa de Muerte",
     }
 )
 
-columnas_finales = ["Código CIE-10", "Nombre de la Causa de Muerte", "Total de Defunciones"]
-top_causas = top_causas[columnas_finales].copy()
+columnas_seleccionadas = [
+    "Código CIE-10",
+    "Nombre de la Causa de Muerte",
+    "Total de Defunciones",
+]
+top_causas = top_causas[columnas_seleccionadas].copy()
 
-# E. Tratar nulos, ordenar y extraer el Top 10
-top_causas["Nombre de la Causa de Muerte"] = top_causas["Nombre de la Causa de Muerte"].fillna("Descripción no especificada")
-top_causas = top_causas.sort_values(by="Total de Defunciones", ascending=False).head(10)
+top_causas["Nombre de la Causa de Muerte"] = (
+    top_causas["Nombre de la Causa de Muerte"]
+    .astype(str)
+    .str.strip()
+    .replace({"": None, "nan": None, "None": None})
+    .fillna("Causa no especificada")
+)
 
-# F. Guardar archivo CSV
+top_causas = top_causas.sort_values(
+    by="Total de Defunciones", ascending=False
+).head(10)
+
+# F. Guardar CSV actualizado
 top_causas.to_csv("data/top10_causas.csv", index=False)
-print("Top 10 causas actualizado con éxito en data/top10_causas.csv")
+print("Top 10 causas procesado exitosamente con descripciones en data/top10_causas.csv")
+
+
+
 # 6. BARRAS APILADAS: Comparación por Sexo y Departamento
 print("Procesando gráfico 6: Mortalidad por sexo y departamento...")
 df_sexo = (
