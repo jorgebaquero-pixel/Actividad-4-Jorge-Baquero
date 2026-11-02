@@ -35,15 +35,50 @@ divipola_deptos = df_divipola[["COD_DEPARTAMENTO", "DEPARTAMENTO"]].drop_duplica
 # B. GENERACIÓN DE LOS ARCHIVOS RESUMIDOS
 # ---------------------------------------------------------
 
-# 1. MAPA: Muertes por Departamento
-print("Procesando gráfico 1: Mapa por departamento...")
+# 1. MAPA: Muertes por Departamento (para px.choropleth con GeoJSON)
+print("Procesando gráfico 1: Agrupación de muertes por departamento...")
+
+# A. Limpiar y normalizar códigos de departamento a 2 dígitos
+df_nofetal["COD_DEPARTAMENTO"] = (
+    df_nofetal["COD_DEPARTAMENTO"]
+    .astype(str)
+    .str.split(".")
+    .str[0]
+    .str.strip()
+    .str.zfill(2)
+)
+
+df_divipola["COD_DEPARTAMENTO"] = (
+    df_divipola["COD_DEPARTAMENTO"]
+    .astype(str)
+    .str.split(".")
+    .str[0]
+    .str.strip()
+    .str.zfill(2)
+)
+
+# Limpiar nombres de departamento (quitar espacios sobrantes)
+df_divipola["DEPARTAMENTO"] = df_divipola["DEPARTAMENTO"].astype(str).str.strip()
+
+# B. Catálogo único de departamentos desde Divipola
+catalogo_deptos = df_divipola[["COD_DEPARTAMENTO", "DEPARTAMENTO"]].drop_duplicates(subset=["COD_DEPARTAMENTO"])
+
+# C. Agrupar conteo de defunciones por código de departamento
 df_mapa = (
     df_nofetal.groupby("COD_DEPARTAMENTO")
     .size()
     .reset_index(name="TOTAL_MUERTES")
 )
-df_mapa = pd.merge(df_mapa, divipola_deptos, on="COD_DEPARTAMENTO", how="inner")
+
+# D. Cruzar para obtener el nombre oficial del departamento
+df_mapa = pd.merge(df_mapa, catalogo_deptos, on="COD_DEPARTAMENTO", how="inner")
+
+# Reordenar columnas
+df_mapa = df_mapa[["COD_DEPARTAMENTO", "DEPARTAMENTO", "TOTAL_MUERTES"]]
+
+# E. Guardar el archivo CSV liviano
 df_mapa.to_csv("data/muertes_departamento.csv", index=False)
+print("CSV data/muertes_departamento.csv generado exitosamente.")
 
 # 2. GRÁFICO DE LÍNEAS: Evolución Mensual
 print("Procesando gráfico 2: Tendencia mensual...")
