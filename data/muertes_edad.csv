@@ -1,10 +1,11 @@
 RANGO_EDAD,TOTAL_MUERTES
-1. Mortalidad infantil (1-11 meses),2714
-10. Edad desconocida,86468
+1. Infantil (1-11 meses),2714
+10. Edad desconocida,313
 2. Primera infancia (1-4 años),1493
-3. Niñez (5-14 años),2771
-4. Adolescencia y Juventud (15-24 años),1518
-5. Juventud y Adultez temprana (25-39 años),5788
-6. Adultez intermedia (40-54 años),17481
-7. Vejez (55-79 años),40740
-8. Longevidad (80+ años),85382
+3. Niñez (5-14 años),6282
+4. Adolescencia (15-19 años),3795
+5. Juventud (20-29 años),11840
+6. Adultez temprana (30-44 años),17276
+7. Adultez intermedia (45-59 años),29105
+8. Vejez (60-84 años),115453
+9. Longevidad (85+ años),56084

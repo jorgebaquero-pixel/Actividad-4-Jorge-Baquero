@@ -143,9 +143,9 @@ python src/app.py
 
 La interfaz gráfica integra 7 componentes visuales interactivos organizados en filas responsivas. A continuación se describe el propósito, la configuración y los hallazgos analíticos clave de cada elemento:
 
-### Visualización 1: Mapa Coroplético de Distribución Territorial
+### Visualización 1: Mapa Distribución Territorial
 
-* **Tipo de gráfico**: Mapa coroplético por departamento.
+* **Tipo de gráfico**: Mapa por departamento.
 * **Propósito**: Evaluar el volumen total de registros concentrados en cada entidad territorial de Colombia durante 2019.
 * **Hallazgos clave**: Los departamentos con mayor concentración de registros coinciden con los principales centros urbanos e industriales del país: Bogotá D.C., Antioquia y Valle del Cauca lideran las cifras absolutas debido a la alta densidad demográfica. Por el contrario, los departamentos de la Orinoquía y Amazonía presentan los registros más bajos en valores absolutos.
 
@@ -181,18 +181,7 @@ La interfaz gráfica integra 7 componentes visuales interactivos organizados en 
 
 ![Circular menor indice de registro](assets/grafico_circular.png)
 ---
-
-### Visualización 5: Tabla Interactiva de Principales Causas
-
-* **Tipo de componente**: Tabla de datos filtrable (`dash_table.DataTable`).
-* **Propósito**: Enumerar en orden descendente las 10 causas diagnósticas principales en Colombia, vinculando el código CIE-10 de 4 caracteres con su descripción textual oficial.
-* **Hallazgos clave**: Las enfermedades crónicas no transmisibles encabezan el ranking epidemiológico en Colombia: el infarto agudo del miocardio (I219), las enfermedades pulmonares obstructivas crónicas (J449) y las complicaciones de la diabetes mellitus (E147) representan las principales causas en el país.
-
-![Principales causas de homicidios](assets/grafico_de_lineas.png)
-
----
-
-### Visualización 6: Gráfico de Barras Apiladas por Sexo y Departamento
+### Visualización 5: Gráfico de Barras Apiladas por Sexo y Departamento
 
 * **Tipo de gráfico**: Barras apiladas multidimensionales (`px.bar` con `barmode='stack'`).
 * **Propósito**: Comparar la proporción y distribución de registros entre hombres y mujeres para cada departamento.
@@ -202,7 +191,7 @@ La interfaz gráfica integra 7 componentes visuales interactivos organizados en 
 
 ---
 
-### Visualización 7: Histograma de Distribución por Grupos de Edad
+### Visualización 6: Histograma de Distribución por Grupos de Edad
 
 * **Tipo de gráfico**: Histograma de distribución agrupada (`px.bar`).
 * **Propósito**: Representar la frecuencia categorizada por los rangos estandarizados del DANE en la variable `GRUPO_EDAD1`.
@@ -212,16 +201,22 @@ La interfaz gráfica integra 7 componentes visuales interactivos organizados en 
 
 ---
 
-## 8. Ficha Técnica y Créditos del Proyecto
+### Visualización 7: Tabla Interactiva de Principales Causas
+
+* **Tipo de componente**: Tabla de datos filtrable (`dash_table.DataTable`).
+* **Propósito**: Enumerar en orden descendente las 10 causas diagnósticas principales en Colombia, vinculando el código CIE-10 de 4 caracteres con su descripción textual oficial.
+* **Hallazgos clave**: Las enfermedades crónicas no transmisibles encabezan el ranking epidemiológico en Colombia: el infarto agudo del miocardio (I219), las enfermedades pulmonares obstructivas crónicas (J449) y las complicaciones de la diabetes mellitus (E147) representan las principales causas en el país.
+
+![Causas de Muerte](assets/tabla.png)
+
+---
+
+## 8. Datos
 
 * **Asignatura**: Aplicaciones I
 * **Programa**: Maestría en Inteligencia Artificial
 * **Institución**: Universidad de La Salle (Bogotá, Colombia)
 * **Docente**: Cristian Duney Bermúdez Quintero
-* **Integrantes del Grupo**:  
-  * Jorge Luis Baquero Guio
-  * [Nombre Completo Integrante 2]
-  * [Nombre Completo Integrante 3]
-  * [Nombre Completo Integrante 4]
-* **Enlace a la Aplicación Desplegada (Render PaaS)**: [Incluir aquí el enlace al servicio desplegado en Render]
-* **Enlace al Repositorio de GitHub**: [Incluir aquí el enlace al repositorio público en GitHub]
+* **Presentado por**: Jorge Luis Baquero Guio
+* **Enlace a la Aplicación Desplegada (Render PaaS)**: https://actividad-4-jorge-baquero.onrender.com
+* **Enlace al Repositorio de GitHub**: https://github.com/jorgebaquero-pixel/Actividad-4-Jorge-Baquero.git
